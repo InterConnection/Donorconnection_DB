@@ -1,0 +1,4582 @@
+--
+-- PostgreSQL database cluster dump
+--
+
+\connect postgres
+
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+
+--
+-- Roles
+--
+
+CREATE ROLE icdb;
+ALTER ROLE icdb WITH NOSUPERUSER INHERIT NOCREATEROLE NOCREATEDB LOGIN NOREPLICATION PASSWORD 'md50e24964249d8eb6f63fa689b9f920fbc';
+CREATE ROLE postgres;
+ALTER ROLE postgres WITH SUPERUSER INHERIT CREATEROLE CREATEDB LOGIN REPLICATION;
+
+
+
+
+
+
+--
+-- Database creation
+--
+
+CREATE DATABASE icdb_django_db WITH TEMPLATE = template0 OWNER = icdb;
+REVOKE ALL ON DATABASE template1 FROM PUBLIC;
+REVOKE ALL ON DATABASE template1 FROM postgres;
+GRANT ALL ON DATABASE template1 TO postgres;
+GRANT CONNECT ON DATABASE template1 TO PUBLIC;
+
+
+\connect icdb_django_db
+
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: accounts_userprofile; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE accounts_userprofile (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    user_barcode character varying(10) NOT NULL
+);
+
+
+ALTER TABLE public.accounts_userprofile OWNER TO icdb;
+
+--
+-- Name: accounts_userprofile_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE accounts_userprofile_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.accounts_userprofile_id_seq OWNER TO icdb;
+
+--
+-- Name: accounts_userprofile_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE accounts_userprofile_id_seq OWNED BY accounts_userprofile.id;
+
+
+--
+-- Name: auth_group; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE auth_group (
+    id integer NOT NULL,
+    name character varying(80) NOT NULL
+);
+
+
+ALTER TABLE public.auth_group OWNER TO icdb;
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE auth_group_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_group_id_seq OWNER TO icdb;
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE auth_group_id_seq OWNED BY auth_group.id;
+
+
+--
+-- Name: auth_group_permissions; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE auth_group_permissions (
+    id integer NOT NULL,
+    group_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_group_permissions OWNER TO icdb;
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE auth_group_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_group_permissions_id_seq OWNER TO icdb;
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE auth_group_permissions_id_seq OWNED BY auth_group_permissions.id;
+
+
+--
+-- Name: auth_permission; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE auth_permission (
+    id integer NOT NULL,
+    name character varying(50) NOT NULL,
+    content_type_id integer NOT NULL,
+    codename character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.auth_permission OWNER TO icdb;
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE auth_permission_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_permission_id_seq OWNER TO icdb;
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE auth_permission_id_seq OWNED BY auth_permission.id;
+
+
+--
+-- Name: auth_user; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE auth_user (
+    id integer NOT NULL,
+    username character varying(30) NOT NULL,
+    first_name character varying(30) NOT NULL,
+    last_name character varying(30) NOT NULL,
+    email character varying(75) NOT NULL,
+    password character varying(128) NOT NULL,
+    is_staff boolean NOT NULL,
+    is_active boolean NOT NULL,
+    is_superuser boolean NOT NULL,
+    last_login timestamp with time zone NOT NULL,
+    date_joined timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.auth_user OWNER TO icdb;
+
+--
+-- Name: auth_user_groups; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE auth_user_groups (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    group_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_user_groups OWNER TO icdb;
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE auth_user_groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_groups_id_seq OWNER TO icdb;
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE auth_user_groups_id_seq OWNED BY auth_user_groups.id;
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE auth_user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_id_seq OWNER TO icdb;
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE auth_user_id_seq OWNED BY auth_user.id;
+
+
+--
+-- Name: auth_user_user_permissions; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE auth_user_user_permissions (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_user_user_permissions OWNER TO icdb;
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE auth_user_user_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_user_permissions_id_seq OWNER TO icdb;
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE auth_user_user_permissions_id_seq OWNED BY auth_user_user_permissions.id;
+
+
+--
+-- Name: django_admin_log; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE django_admin_log (
+    id integer NOT NULL,
+    action_time timestamp with time zone NOT NULL,
+    user_id integer NOT NULL,
+    content_type_id integer,
+    object_id text,
+    object_repr character varying(200) NOT NULL,
+    action_flag smallint NOT NULL,
+    change_message text NOT NULL,
+    CONSTRAINT django_admin_log_action_flag_check CHECK ((action_flag >= 0))
+);
+
+
+ALTER TABLE public.django_admin_log OWNER TO icdb;
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE django_admin_log_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_admin_log_id_seq OWNER TO icdb;
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE django_admin_log_id_seq OWNED BY django_admin_log.id;
+
+
+--
+-- Name: django_content_type; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE django_content_type (
+    id integer NOT NULL,
+    name character varying(100) NOT NULL,
+    app_label character varying(100) NOT NULL,
+    model character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.django_content_type OWNER TO icdb;
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE django_content_type_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_content_type_id_seq OWNER TO icdb;
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE django_content_type_id_seq OWNED BY django_content_type.id;
+
+
+--
+-- Name: django_session; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE django_session (
+    session_key character varying(40) NOT NULL,
+    session_data text NOT NULL,
+    expire_date timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.django_session OWNER TO icdb;
+
+--
+-- Name: django_site; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE django_site (
+    id integer NOT NULL,
+    domain character varying(100) NOT NULL,
+    name character varying(50) NOT NULL
+);
+
+
+ALTER TABLE public.django_site OWNER TO icdb;
+
+--
+-- Name: django_site_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE django_site_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_site_id_seq OWNER TO icdb;
+
+--
+-- Name: django_site_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE django_site_id_seq OWNED BY django_site.id;
+
+
+--
+-- Name: donations_donation; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE donations_donation (
+    id integer NOT NULL,
+    name character varying(100) NOT NULL,
+    donor_id integer NOT NULL,
+    donated_at timestamp with time zone,
+    discovery_report_requested boolean NOT NULL,
+    discovery_report_sent date,
+    discovery_report_status character varying(100),
+    valuation_report_requested boolean NOT NULL,
+    valuation_report_sent date,
+    valuation_report_status character varying(100),
+    hdd_wipe_requested integer NOT NULL,
+    hdd_report_sent date,
+    hdd_report_status character varying(100),
+    source integer,
+    note text,
+    retail_data_destruction_id integer,
+    published_on_donor_connect boolean NOT NULL
+);
+
+
+ALTER TABLE public.donations_donation OWNER TO icdb;
+
+--
+-- Name: donations_donation_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE donations_donation_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.donations_donation_id_seq OWNER TO icdb;
+
+--
+-- Name: donations_donation_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE donations_donation_id_seq OWNED BY donations_donation.id;
+
+
+--
+-- Name: donations_donor; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE donations_donor (
+    id integer NOT NULL,
+    name character varying(100) NOT NULL,
+    address character varying(200) NOT NULL,
+    city character varying(50) NOT NULL,
+    zip character varying(50) NOT NULL,
+    country character varying(50) NOT NULL,
+    state character varying(10) NOT NULL,
+    phone_number character varying(15) NOT NULL,
+    fax character varying(15) NOT NULL,
+    email character varying(70) NOT NULL,
+    contact_name_1 character varying(30) NOT NULL,
+    contact_number_1 character varying(15) NOT NULL,
+    contact_name_2 character varying(30) NOT NULL,
+    contact_number_2 character varying(15) NOT NULL,
+    contact_name_3 character varying(30) NOT NULL,
+    contact_number_3 character varying(15) NOT NULL,
+    referring_partner integer,
+    notes text NOT NULL,
+    account_id integer,
+    referral_partner_id integer
+);
+
+
+ALTER TABLE public.donations_donor OWNER TO icdb;
+
+--
+-- Name: donations_donor_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE donations_donor_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.donations_donor_id_seq OWNER TO icdb;
+
+--
+-- Name: donations_donor_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE donations_donor_id_seq OWNED BY donations_donor.id;
+
+
+--
+-- Name: inventory_audio_report; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE inventory_audio_report (
+    id integer NOT NULL,
+    inventory_report_id integer NOT NULL,
+    name character varying(100),
+    manufacturer character varying(100),
+    description character varying(100),
+    device_id character varying(150),
+    pnp_device_id character varying(150),
+    mpu_401_address character varying(100),
+    install_date character varying(100)
+);
+
+
+ALTER TABLE public.inventory_audio_report OWNER TO icdb;
+
+--
+-- Name: inventory_audio_report_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE inventory_audio_report_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventory_audio_report_id_seq OWNER TO icdb;
+
+--
+-- Name: inventory_audio_report_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE inventory_audio_report_id_seq OWNED BY inventory_audio_report.id;
+
+
+--
+-- Name: inventory_barcode; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE inventory_barcode (
+    number integer NOT NULL,
+    item_type integer NOT NULL,
+    created_on timestamp with time zone NOT NULL,
+    modified_on timestamp with time zone NOT NULL,
+    donation_id integer,
+    donation_value integer,
+    previous_status character varying(100),
+    status character varying(100),
+    box_id integer,
+    pallet_id integer,
+    retail_value integer,
+    sold_on timestamp with time zone,
+    recycled_on timestamp with time zone,
+    shipped_on timestamp with time zone,
+    lost boolean NOT NULL,
+    last_seen_on timestamp with time zone,
+    void boolean NOT NULL,
+    note text
+);
+
+
+ALTER TABLE public.inventory_barcode OWNER TO icdb;
+
+--
+-- Name: inventory_barcode_number_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE inventory_barcode_number_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventory_barcode_number_seq OWNER TO icdb;
+
+--
+-- Name: inventory_barcode_number_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE inventory_barcode_number_seq OWNED BY inventory_barcode.number;
+
+
+--
+-- Name: inventory_battery_report; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE inventory_battery_report (
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.inventory_battery_report OWNER TO icdb;
+
+--
+-- Name: inventory_battery_report_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE inventory_battery_report_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventory_battery_report_id_seq OWNER TO icdb;
+
+--
+-- Name: inventory_battery_report_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE inventory_battery_report_id_seq OWNED BY inventory_battery_report.id;
+
+
+--
+-- Name: inventory_box; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE inventory_box (
+    id integer NOT NULL,
+    barcode_id integer NOT NULL,
+    name character varying(100),
+    description character varying(300),
+    location character varying(50)
+);
+
+
+ALTER TABLE public.inventory_box OWNER TO icdb;
+
+--
+-- Name: inventory_box_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+`
+CREATE SEQUENCE inventory_box_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventory_box_id_seq OWNER TO icdb;
+
+--
+-- Name: inventory_box_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE inventory_box_id_seq OWNED BY inventory_box.id;
+
+
+--
+-- Name: inventory_computer; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE inventory_computer (
+    id integer NOT NULL,
+    barcode_id integer NOT NULL,
+    battery_status character varying(20),
+    case_type character varying(20) NOT NULL,
+    coa_id character varying(29) NOT NULL,
+    coa_os character varying(50) NOT NULL,
+    color character varying(10) NOT NULL,
+    condition character varying(20) NOT NULL,
+    date_created date,
+    date_sold date,
+    is_widescreen boolean NOT NULL,
+    manufacturer character varying(60) NOT NULL,
+    max_resolution character varying(20),
+    model character varying(60) NOT NULL,
+    name character varying(100) NOT NULL,
+    screen_size character varying(10),
+    serial_number character varying(50) NOT NULL,
+    series character varying(60) NOT NULL,
+    service_tag character varying(15) NOT NULL,
+    size character varying(10) NOT NULL,
+    wireless_nic character varying(10),
+    discovery_needed boolean NOT NULL,
+    triage_needed boolean NOT NULL,
+    refurb_needed boolean NOT NULL,
+    qc_needed boolean NOT NULL,
+    current_report_id integer,
+    current_touchpoint_id integer,
+    build_spec_id integer,
+    order_id integer,
+    techsoup_order_id integer
+);
+
+
+ALTER TABLE public.inventory_computer OWNER TO icdb;
+
+--
+-- Name: inventory_computer_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE inventory_computer_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventory_computer_id_seq OWNER TO icdb;
+
+--
+-- Name: inventory_computer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE inventory_computer_id_seq OWNED BY inventory_computer.id;
+
+
+--
+-- Name: inventory_cpu_report; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE inventory_cpu_report (
+    id integer NOT NULL,
+    inventory_report_id integer NOT NULL,
+    manufacturer character varying(100) NOT NULL,
+    family integer,
+    architecture integer,
+    caption character varying(100),
+    data_width integer,
+    description character varying(100),
+    ext_clock integer,
+    install_date character varying(75),
+    l2_cache_size integer,
+    l2_cache_speed integer,
+    l3_cache_size integer,
+    l3_cache_speed integer,
+    level integer,
+    max_clock_speed integer,
+    name character varying(100),
+    number_of_cores integer,
+    number_of_logical_processors integer,
+    power_management_supported boolean NOT NULL,
+    processor_id character varying(50),
+    processor_type integer,
+    revision character varying(50),
+    role character varying(20),
+    socket_designation character varying(30),
+    stepping character varying(30),
+    unique_id character varying(50),
+    version character varying(50)
+);
+
+
+ALTER TABLE public.inventory_cpu_report OWNER TO icdb;
+
+--
+-- Name: inventory_cpu_report_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE inventory_cpu_report_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventory_cpu_report_id_seq OWNER TO icdb;
+
+--
+-- Name: inventory_cpu_report_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE inventory_cpu_report_id_seq OWNED BY inventory_cpu_report.id;
+
+
+--
+-- Name: inventory_hdd; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE inventory_hdd (
+    id integer NOT NULL,
+    barcode_id integer,
+    name character varying(100),
+    current_report_id integer,
+    origin_computer_id integer,
+    crushed boolean NOT NULL
+);
+
+
+ALTER TABLE public.inventory_hdd OWNER TO icdb;
+
+--
+-- Name: inventory_hdd_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE inventory_hdd_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventory_hdd_id_seq OWNER TO icdb;
+
+--
+-- Name: inventory_hdd_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE inventory_hdd_id_seq OWNED BY inventory_hdd.id;
+
+
+--
+-- Name: inventory_hdd_partition_report; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE inventory_hdd_partition_report (
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.inventory_hdd_partition_report OWNER TO icdb;
+
+--
+-- Name: inventory_hdd_partition_report_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE inventory_hdd_partition_report_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventory_hdd_partition_report_id_seq OWNER TO icdb;
+
+--
+-- Name: inventory_hdd_partition_report_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE inventory_hdd_partition_report_id_seq OWNED BY inventory_hdd_partition_report.id;
+
+
+--
+-- Name: inventory_hdd_report; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE inventory_hdd_report (
+    id integer NOT NULL,
+    inventory_report_id integer,
+    bytes_per_sector integer,
+    capabilities character varying(150),
+    capability_descriptions character varying(2000),
+    description character varying(100),
+    device_id character varying(150),
+    firmware_revision character varying(100),
+    full_name character varying(100),
+    hdd_serial_number character varying(75),
+    hdd_id integer,
+    ide_controller character varying(150),
+    install_date character varying(75),
+    interface_type character varying(100),
+    manufacturer character varying(100),
+    model character varying(200),
+    partition_report_id integer,
+    pnp_device_id character varying(150),
+    sectors_per_track integer,
+    short_name character varying(75),
+    size bigint,
+    size_description character varying(30),
+    total_cylinders integer,
+    total_heads integer,
+    total_tracks integer,
+    tracks_per_cylinder integer,
+    wipe_report_id integer
+);
+
+
+ALTER TABLE public.inventory_hdd_report OWNER TO icdb;
+
+--
+-- Name: inventory_hdd_report_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE inventory_hdd_report_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventory_hdd_report_id_seq OWNER TO icdb;
+
+--
+-- Name: inventory_hdd_report_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE inventory_hdd_report_id_seq OWNED BY inventory_hdd_report.id;
+
+
+--
+-- Name: inventory_hdd_wipe_report; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE inventory_hdd_wipe_report (
+    id integer NOT NULL,
+    wipe_date date NOT NULL,
+    wipe_type character varying(60) NOT NULL,
+    wipe_successful boolean NOT NULL
+);
+
+
+ALTER TABLE public.inventory_hdd_wipe_report OWNER TO icdb;
+
+--
+-- Name: inventory_hdd_wipe_report_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE inventory_hdd_wipe_report_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventory_hdd_wipe_report_id_seq OWNER TO icdb;
+
+--
+-- Name: inventory_hdd_wipe_report_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE inventory_hdd_wipe_report_id_seq OWNED BY inventory_hdd_wipe_report.id;
+
+
+--
+-- Name: inventory_inventory_report; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE inventory_inventory_report (
+    id integer NOT NULL,
+    barcode_id integer NOT NULL,
+    manufacturer character varying(100),
+    model character varying(100),
+    system_type integer,
+    pxe_enabled boolean NOT NULL,
+    report_date date NOT NULL,
+    cpu_summary character varying(50),
+    hdd_summary character varying(50),
+    ram_summary character varying(50)
+);
+
+
+ALTER TABLE public.inventory_inventory_report OWNER TO icdb;
+
+--
+-- Name: inventory_inventory_report_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE inventory_inventory_report_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventory_inventory_report_id_seq OWNER TO icdb;
+
+--
+-- Name: inventory_inventory_report_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE inventory_inventory_report_id_seq OWNED BY inventory_inventory_report.id;
+
+
+--
+-- Name: inventory_inventorylabel; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE inventory_inventorylabel (
+    id integer NOT NULL,
+    name character varying(50) NOT NULL,
+    label_type integer NOT NULL
+);
+
+
+ALTER TABLE public.inventory_inventorylabel OWNER TO icdb;
+
+--
+-- Name: inventory_inventorylabel_barcodes; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE inventory_inventorylabel_barcodes (
+    id integer NOT NULL,
+    inventorylabel_id integer NOT NULL,
+    barcode_id integer NOT NULL
+);
+
+
+ALTER TABLE public.inventory_inventorylabel_barcodes OWNER TO icdb;
+
+--
+-- Name: inventory_inventorylabel_barcodes_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE inventory_inventorylabel_barcodes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventory_inventorylabel_barcodes_id_seq OWNER TO icdb;
+
+--
+-- Name: inventory_inventorylabel_barcodes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE inventory_inventorylabel_barcodes_id_seq OWNED BY inventory_inventorylabel_barcodes.id;
+
+
+--
+-- Name: inventory_inventorylabel_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE inventory_inventorylabel_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventory_inventorylabel_id_seq OWNER TO icdb;
+
+--
+-- Name: inventory_inventorylabel_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE inventory_inventorylabel_id_seq OWNED BY inventory_inventorylabel.id;
+
+
+--
+-- Name: inventory_inventorylabel_item_types; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE inventory_inventorylabel_item_types (
+    id integer NOT NULL,
+    inventorylabel_id integer NOT NULL,
+    item_type_id integer NOT NULL
+);
+
+
+ALTER TABLE public.inventory_inventorylabel_item_types OWNER TO icdb;
+
+--
+-- Name: inventory_inventorylabel_item_types_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE inventory_inventorylabel_item_types_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventory_inventorylabel_item_types_id_seq OWNER TO icdb;
+
+--
+-- Name: inventory_inventorylabel_item_types_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE inventory_inventorylabel_item_types_id_seq OWNED BY inventory_inventorylabel_item_types.id;
+
+
+--
+-- Name: inventory_item_type; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE inventory_item_type (
+    id integer NOT NULL,
+    name character varying(50) NOT NULL,
+    barcoded boolean NOT NULL
+);
+
+
+ALTER TABLE public.inventory_item_type OWNER TO icdb;
+
+--
+-- Name: inventory_item_type_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE inventory_item_type_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventory_item_type_id_seq OWNER TO icdb;
+
+--
+-- Name: inventory_item_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE inventory_item_type_id_seq OWNED BY inventory_item_type.id;
+
+
+--
+-- Name: inventory_labelprinter; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE inventory_labelprinter (
+    id integer NOT NULL,
+    name character varying(50) NOT NULL,
+    printer_type integer NOT NULL,
+    address character varying(50),
+    folder character varying(50)
+);
+
+
+ALTER TABLE public.inventory_labelprinter OWNER TO icdb;
+
+--
+-- Name: inventory_labelprinter_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE inventory_labelprinter_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventory_labelprinter_id_seq OWNER TO icdb;
+
+--
+-- Name: inventory_labelprinter_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE inventory_labelprinter_id_seq OWNED BY inventory_labelprinter.id;
+
+
+--
+-- Name: inventory_mac; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE inventory_mac (
+    id integer NOT NULL,
+    barcode_id integer NOT NULL,
+    model character varying(60),
+    name character varying(100),
+    current_report_id integer,
+    discovery_report_id integer
+);
+
+
+ALTER TABLE public.inventory_mac OWNER TO icdb;
+
+--
+-- Name: inventory_mac_hdd_report; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE inventory_mac_hdd_report (
+    id integer NOT NULL,
+    mac_report_id integer NOT NULL,
+    name character varying(100) NOT NULL,
+    size character varying(20) NOT NULL,
+    interface character varying(4) NOT NULL,
+    serial_number character varying(50) NOT NULL
+);
+
+
+ALTER TABLE public.inventory_mac_hdd_report OWNER TO icdb;
+
+--
+-- Name: inventory_mac_hdd_report_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE inventory_mac_hdd_report_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventory_mac_hdd_report_id_seq OWNER TO icdb;
+
+--
+-- Name: inventory_mac_hdd_report_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE inventory_mac_hdd_report_id_seq OWNED BY inventory_mac_hdd_report.id;
+
+
+--
+-- Name: inventory_mac_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE inventory_mac_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventory_mac_id_seq OWNER TO icdb;
+
+--
+-- Name: inventory_mac_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE inventory_mac_id_seq OWNED BY inventory_mac.id;
+
+
+--
+-- Name: inventory_mac_inventory_report; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE inventory_mac_inventory_report (
+    id integer NOT NULL,
+    barcode_id integer NOT NULL,
+    cpu_name character varying(100) NOT NULL,
+    cpu_speed character varying(20) NOT NULL,
+    memory character varying(20) NOT NULL,
+    serial_number character varying(50) NOT NULL,
+    model character varying(50) NOT NULL,
+    user_id integer
+);
+
+
+ALTER TABLE public.inventory_mac_inventory_report OWNER TO icdb;
+
+--
+-- Name: inventory_mac_inventory_report_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE inventory_mac_inventory_report_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventory_mac_inventory_report_id_seq OWNER TO icdb;
+
+--
+-- Name: inventory_mac_inventory_report_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE inventory_mac_inventory_report_id_seq OWNED BY inventory_mac_inventory_report.id;
+
+
+--
+-- Name: inventory_mac_optical_report; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE inventory_mac_optical_report (
+    id integer NOT NULL,
+    mac_report_id integer NOT NULL,
+    name character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.inventory_mac_optical_report OWNER TO icdb;
+
+--
+-- Name: inventory_mac_optical_report_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE inventory_mac_optical_report_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventory_mac_optical_report_id_seq OWNER TO icdb;
+
+--
+-- Name: inventory_mac_optical_report_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE inventory_mac_optical_report_id_seq OWNED BY inventory_mac_optical_report.id;
+
+
+--
+-- Name: inventory_monitor; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE inventory_monitor (
+    id integer NOT NULL,
+    barcode_id integer NOT NULL,
+    name character varying(100) NOT NULL,
+    manufacturer character varying(50),
+    model character varying(50),
+    color character varying(20),
+    max_resolution character varying(20),
+    grade integer,
+    screen_size integer,
+    widescreen boolean NOT NULL,
+    additional_features text,
+    order_id integer,
+    processed_by_id integer,
+    processing_started_at timestamp with time zone,
+    processing_finished_at timestamp with time zone
+);
+
+
+ALTER TABLE public.inventory_monitor OWNER TO icdb;
+
+--
+-- Name: inventory_monitor_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE inventory_monitor_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventory_monitor_id_seq OWNER TO icdb;
+
+--
+-- Name: inventory_monitor_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE inventory_monitor_id_seq OWNED BY inventory_monitor.id;
+
+
+--
+-- Name: inventory_motherboard_report; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE inventory_motherboard_report (
+    id integer NOT NULL,
+    inventory_report_id integer NOT NULL,
+    bios_caption character varying(100),
+    bios_characteristics character varying(50),
+    bios_manufacturer character varying(100),
+    bios_name character varying(100),
+    bios_serial_number character varying(80),
+    bios_version_1 character varying(300),
+    bios_version_2 character varying(300),
+    caption character varying(100),
+    current_language character varying(50),
+    description character varying(100),
+    install_date character varying(75),
+    manufacturer character varying(100),
+    model character varying(200),
+    name character varying(100),
+    part_number character varying(100),
+    product character varying(100),
+    release_date character varying(75),
+    serial_number character varying(80),
+    smbios_bios_version character varying(80),
+    smbios_major_version character varying(80),
+    smbios_minor_version character varying(80),
+    smbios_present boolean NOT NULL,
+    target_operating_system character varying(50),
+    version character varying(50)
+);
+
+
+ALTER TABLE public.inventory_motherboard_report OWNER TO icdb;
+
+--
+-- Name: inventory_motherboard_report_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE inventory_motherboard_report_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventory_motherboard_report_id_seq OWNER TO icdb;
+
+--
+-- Name: inventory_motherboard_report_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE inventory_motherboard_report_id_seq OWNED BY inventory_motherboard_report.id;
+
+
+--
+-- Name: inventory_opticaldrive_report; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE inventory_opticaldrive_report (
+    id integer NOT NULL,
+    inventory_report_id integer NOT NULL,
+    capabilities character varying(150),
+    capability_descriptions character varying(2000),
+    device_id character varying(150),
+    install_date character varying(75),
+    manufacturer character varying(100),
+    max_media_size integer,
+    maximum_component_length integer,
+    media_type character varying(50),
+    name character varying(100),
+    number_of_media_supported integer,
+    opt_serial_number character varying(30),
+    pnp_device_id character varying(150),
+    transfer_rate character varying(25)
+);
+
+
+ALTER TABLE public.inventory_opticaldrive_report OWNER TO icdb;
+
+--
+-- Name: inventory_opticaldrive_report_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE inventory_opticaldrive_report_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventory_opticaldrive_report_id_seq OWNER TO icdb;
+
+--
+-- Name: inventory_opticaldrive_report_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE inventory_opticaldrive_report_id_seq OWNED BY inventory_opticaldrive_report.id;
+
+
+--
+-- Name: inventory_other; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE inventory_other (
+    id integer NOT NULL,
+    barcode_id integer NOT NULL,
+    name character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.inventory_other OWNER TO icdb;
+
+--
+-- Name: inventory_other_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE inventory_other_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventory_other_id_seq OWNER TO icdb;
+
+--
+-- Name: inventory_other_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE inventory_other_id_seq OWNED BY inventory_other.id;
+
+
+--
+-- Name: inventory_pallet; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE inventory_pallet (
+    id integer NOT NULL,
+    barcode_id integer NOT NULL,
+    name character varying(100),
+    location character varying(100),
+    shipping_container_id integer
+);
+
+
+ALTER TABLE public.inventory_pallet OWNER TO icdb;
+
+--
+-- Name: inventory_pallet_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE inventory_pallet_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventory_pallet_id_seq OWNER TO icdb;
+
+--
+-- Name: inventory_pallet_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE inventory_pallet_id_seq OWNED BY inventory_pallet.id;
+
+
+--
+-- Name: inventory_ram_report; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE inventory_ram_report (
+    id integer NOT NULL,
+    inventory_report_id integer NOT NULL,
+    caption character varying(100),
+    data_width integer,
+    description character varying(100),
+    device_locator character varying(10),
+    dimm_capacity bigint,
+    form_factor integer,
+    install_date character varying(75),
+    interleave_data_depth integer,
+    interleave_position integer,
+    manufacturer character varying(100),
+    memory_type integer,
+    model character varying(200),
+    name character varying(50),
+    part_number character varying(100),
+    serial_number character varying(30),
+    speed integer,
+    tag character varying(50),
+    total_width integer,
+    type_detail integer
+);
+
+
+ALTER TABLE public.inventory_ram_report OWNER TO icdb;
+
+--
+-- Name: inventory_ram_report_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE inventory_ram_report_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventory_ram_report_id_seq OWNER TO icdb;
+
+--
+-- Name: inventory_ram_report_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE inventory_ram_report_id_seq OWNED BY inventory_ram_report.id;
+
+
+--
+-- Name: inventory_supplycount; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE inventory_supplycount (
+    id integer NOT NULL,
+    box_id integer NOT NULL,
+    count integer NOT NULL,
+    supply_type integer NOT NULL
+);
+
+
+ALTER TABLE public.inventory_supplycount OWNER TO icdb;
+
+--
+-- Name: inventory_supplycount_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE inventory_supplycount_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventory_supplycount_id_seq OWNER TO icdb;
+
+--
+-- Name: inventory_supplycount_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE inventory_supplycount_id_seq OWNED BY inventory_supplycount.id;
+
+
+--
+-- Name: inventory_unprocessedrecycleditems; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE inventory_unprocessedrecycleditems (
+    id integer NOT NULL,
+    donation_id integer NOT NULL,
+    item_type integer NOT NULL,
+    quantity integer NOT NULL
+);
+
+
+ALTER TABLE public.inventory_unprocessedrecycleditems OWNER TO icdb;
+
+--
+-- Name: inventory_unprocessedrecycleditems_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE inventory_unprocessedrecycleditems_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventory_unprocessedrecycleditems_id_seq OWNER TO icdb;
+
+--
+-- Name: inventory_unprocessedrecycleditems_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE inventory_unprocessedrecycleditems_id_seq OWNED BY inventory_unprocessedrecycleditems.id;
+
+
+--
+-- Name: inventory_video_report; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE inventory_video_report (
+    id integer NOT NULL,
+    inventory_report_id integer NOT NULL,
+    accelerator_capabilities character varying(150),
+    adapter_compatibility character varying(100),
+    adapter_dac_type character varying(50),
+    adapter_ram integer,
+    capability_descriptions character varying(2000),
+    description character varying(100),
+    device_id character varying(150),
+    install_date character varying(75),
+    max_memory_supported character varying(35),
+    name character varying(100),
+    pnp_device_id character varying(150),
+    video_architecture integer,
+    video_memory_type integer,
+    video_processor character varying(100)
+);
+
+
+ALTER TABLE public.inventory_video_report OWNER TO icdb;
+
+--
+-- Name: inventory_video_report_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE inventory_video_report_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventory_video_report_id_seq OWNER TO icdb;
+
+--
+-- Name: inventory_video_report_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE inventory_video_report_id_seq OWNED BY inventory_video_report.id;
+
+
+--
+-- Name: production_computerbuildspec; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE production_computerbuildspec (
+    id integer NOT NULL,
+    name character varying(50) NOT NULL,
+    version character varying(50) NOT NULL,
+    description text NOT NULL,
+    color integer NOT NULL,
+    created_on date NOT NULL,
+    retired boolean NOT NULL
+);
+
+
+ALTER TABLE public.production_computerbuildspec OWNER TO icdb;
+
+--
+-- Name: production_computerbuildspec_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE production_computerbuildspec_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.production_computerbuildspec_id_seq OWNER TO icdb;
+
+--
+-- Name: production_computerbuildspec_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE production_computerbuildspec_id_seq OWNED BY production_computerbuildspec.id;
+
+
+--
+-- Name: production_computerdiscoveryrework; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE production_computerdiscoveryrework (
+    id integer NOT NULL,
+    computer_id integer NOT NULL,
+    rework_requested_on timestamp with time zone NOT NULL,
+    rework_requested_by_id integer NOT NULL,
+    rework_started_at timestamp with time zone,
+    rework_finished_at timestamp with time zone,
+    rework_finished_by_id integer,
+    rework_description text
+);
+
+
+ALTER TABLE public.production_computerdiscoveryrework OWNER TO icdb;
+
+--
+-- Name: production_computerdiscoveryrework_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE production_computerdiscoveryrework_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.production_computerdiscoveryrework_id_seq OWNER TO icdb;
+
+--
+-- Name: production_computerdiscoveryrework_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE production_computerdiscoveryrework_id_seq OWNED BY production_computerdiscoveryrework.id;
+
+
+--
+-- Name: production_computerqcrework; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE production_computerqcrework (
+    id integer NOT NULL,
+    computer_id integer NOT NULL,
+    rework_requested_on timestamp with time zone NOT NULL,
+    rework_requested_by_id integer NOT NULL,
+    rework_started_at timestamp with time zone,
+    rework_finished_at timestamp with time zone,
+    rework_finished_by_id integer,
+    rework_description text,
+    outbound_status character varying(50)
+);
+
+
+ALTER TABLE public.production_computerqcrework OWNER TO icdb;
+
+--
+-- Name: production_computerqcrework_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE production_computerqcrework_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.production_computerqcrework_id_seq OWNER TO icdb;
+
+--
+-- Name: production_computerqcrework_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE production_computerqcrework_id_seq OWNED BY production_computerqcrework.id;
+
+
+--
+-- Name: production_computertouchpoint; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE production_computertouchpoint (
+    id integer NOT NULL,
+    computer_id integer NOT NULL,
+    touchtime_in timestamp with time zone NOT NULL,
+    user_in_id integer NOT NULL,
+    status_in character varying(50) NOT NULL,
+    touchtime_out timestamp with time zone,
+    user_out_id integer,
+    status_out character varying(50),
+    snapshot_id integer,
+    summary character varying(50)
+);
+
+
+ALTER TABLE public.production_computertouchpoint OWNER TO icdb;
+
+--
+-- Name: production_computertouchpoint_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE production_computertouchpoint_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.production_computertouchpoint_id_seq OWNER TO icdb;
+
+--
+-- Name: production_computertouchpoint_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE production_computertouchpoint_id_seq OWNED BY production_computertouchpoint.id;
+
+
+--
+-- Name: production_productiongoal; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE production_productiongoal (
+    id integer NOT NULL,
+    daily_goal integer NOT NULL,
+    date_set date NOT NULL
+);
+
+
+ALTER TABLE public.production_productiongoal OWNER TO icdb;
+
+--
+-- Name: production_productiongoal_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE production_productiongoal_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.production_productiongoal_id_seq OWNER TO icdb;
+
+--
+-- Name: production_productiongoal_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE production_productiongoal_id_seq OWNED BY production_productiongoal.id;
+
+
+--
+-- Name: retail_customer; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE retail_customer (
+    id integer NOT NULL,
+    name character varying(30) NOT NULL,
+    address character varying(100),
+    city character varying(30),
+    zip character varying(12),
+    state character varying(10),
+    phone_number character varying(15),
+    fax character varying(15),
+    email character varying(70),
+    contact_name_1 character varying(30),
+    contact_name_2 character varying(30),
+    contact_name_3 character varying(30),
+    country character varying(30),
+    notes text NOT NULL
+);
+
+
+ALTER TABLE public.retail_customer OWNER TO icdb;
+
+--
+-- Name: retail_customer_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE retail_customer_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.retail_customer_id_seq OWNER TO icdb;
+
+--
+-- Name: retail_customer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE retail_customer_id_seq OWNED BY retail_customer.id;
+
+
+--
+-- Name: retail_customerdatadestructionrequest; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE retail_customerdatadestructionrequest (
+    id integer NOT NULL,
+    first_name character varying(50) NOT NULL,
+    last_name character varying(50) NOT NULL,
+    phone character varying(20) NOT NULL,
+    email character varying(254) NOT NULL,
+    street character varying(50) NOT NULL,
+    city character varying(30) NOT NULL,
+    state character varying(2) NOT NULL,
+    zip_code character varying(9) NOT NULL
+);
+
+
+ALTER TABLE public.retail_customerdatadestructionrequest OWNER TO icdb;
+
+--
+-- Name: retail_customerdatadestructionrequest_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE retail_customerdatadestructionrequest_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.retail_customerdatadestructionrequest_id_seq OWNER TO icdb;
+
+--
+-- Name: retail_customerdatadestructionrequest_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE retail_customerdatadestructionrequest_id_seq OWNED BY retail_customerdatadestructionrequest.id;
+
+
+--
+-- Name: south_migrationhistory; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE south_migrationhistory (
+    id integer NOT NULL,
+    app_name character varying(255) NOT NULL,
+    migration character varying(255) NOT NULL,
+    applied timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.south_migrationhistory OWNER TO icdb;
+
+--
+-- Name: south_migrationhistory_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE south_migrationhistory_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.south_migrationhistory_id_seq OWNER TO icdb;
+
+--
+-- Name: south_migrationhistory_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE south_migrationhistory_id_seq OWNED BY south_migrationhistory.id;
+
+
+--
+-- Name: warehouse_customer; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE warehouse_customer (
+    id integer NOT NULL,
+    name character varying(30) NOT NULL,
+    address character varying(100),
+    city character varying(30),
+    zip character varying(12),
+    state character varying(10),
+    phone_number character varying(15),
+    fax character varying(15),
+    email character varying(70),
+    contact_name_1 character varying(30),
+    contact_name_2 character varying(30),
+    contact_name_3 character varying(30),
+    country character varying(30),
+    notes text
+);
+
+
+ALTER TABLE public.warehouse_customer OWNER TO icdb;
+
+--
+-- Name: warehouse_customer_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE warehouse_customer_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.warehouse_customer_id_seq OWNER TO icdb;
+
+--
+-- Name: warehouse_customer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE warehouse_customer_id_seq OWNED BY warehouse_customer.id;
+
+
+--
+-- Name: warehouse_order; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE warehouse_order (
+    id integer NOT NULL,
+    name character varying(100) NOT NULL,
+    recipient_name character varying(80) NOT NULL,
+    note text,
+    target_ship_date date,
+    shipped_on date,
+    ship_method integer,
+    tag_id integer
+);
+
+
+ALTER TABLE public.warehouse_order OWNER TO icdb;
+
+--
+-- Name: warehouse_order_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE warehouse_order_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.warehouse_order_id_seq OWNER TO icdb;
+
+--
+-- Name: warehouse_order_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE warehouse_order_id_seq OWNED BY warehouse_order.id;
+
+
+--
+-- Name: warehouse_orderedcomputers; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE warehouse_orderedcomputers (
+    id integer NOT NULL,
+    order_id integer NOT NULL,
+    computer_type integer NOT NULL,
+    quantity integer NOT NULL,
+    build_spec_id integer NOT NULL
+);
+
+
+ALTER TABLE public.warehouse_orderedcomputers OWNER TO icdb;
+
+--
+-- Name: warehouse_orderedcomputers_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE warehouse_orderedcomputers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.warehouse_orderedcomputers_id_seq OWNER TO icdb;
+
+--
+-- Name: warehouse_orderedcomputers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE warehouse_orderedcomputers_id_seq OWNED BY warehouse_orderedcomputers.id;
+
+
+--
+-- Name: warehouse_orderedmonitors; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE warehouse_orderedmonitors (
+    id integer NOT NULL,
+    order_id integer NOT NULL,
+    quantity integer NOT NULL,
+    description text NOT NULL,
+    modified_on timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.warehouse_orderedmonitors OWNER TO icdb;
+
+--
+-- Name: warehouse_orderedmonitors_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE warehouse_orderedmonitors_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.warehouse_orderedmonitors_id_seq OWNER TO icdb;
+
+--
+-- Name: warehouse_orderedmonitors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE warehouse_orderedmonitors_id_seq OWNED BY warehouse_orderedmonitors.id;
+
+
+--
+-- Name: warehouse_orderedsupplies; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE warehouse_orderedsupplies (
+    id integer NOT NULL,
+    order_id integer NOT NULL,
+    quantity integer NOT NULL,
+    supply_type integer NOT NULL,
+    modified_on timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.warehouse_orderedsupplies OWNER TO icdb;
+
+--
+-- Name: warehouse_orderedsupplies_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE warehouse_orderedsupplies_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.warehouse_orderedsupplies_id_seq OWNER TO icdb;
+
+--
+-- Name: warehouse_orderedsupplies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE warehouse_orderedsupplies_id_seq OWNED BY warehouse_orderedsupplies.id;
+
+
+--
+-- Name: warehouse_ordertarget; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE warehouse_ordertarget (
+    id integer NOT NULL,
+    order_id integer NOT NULL,
+    item_type integer NOT NULL,
+    quantity integer NOT NULL,
+    build_spec_id integer NOT NULL
+);
+
+
+ALTER TABLE public.warehouse_ordertarget OWNER TO icdb;
+
+--
+-- Name: warehouse_ordertarget_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE warehouse_ordertarget_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.warehouse_ordertarget_id_seq OWNER TO icdb;
+
+--
+-- Name: warehouse_ordertarget_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE warehouse_ordertarget_id_seq OWNED BY warehouse_ordertarget.id;
+
+
+--
+-- Name: warehouse_shippingcontainer; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE warehouse_shippingcontainer (
+    id integer NOT NULL,
+    date_created date,
+    date_modified date,
+    location character varying(100),
+    name character varying(100),
+    notes text,
+    shipped_on date
+);
+
+
+ALTER TABLE public.warehouse_shippingcontainer OWNER TO icdb;
+
+--
+-- Name: warehouse_shippingcontainer_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE warehouse_shippingcontainer_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.warehouse_shippingcontainer_id_seq OWNER TO icdb;
+
+--
+-- Name: warehouse_shippingcontainer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE warehouse_shippingcontainer_id_seq OWNED BY warehouse_shippingcontainer.id;
+
+
+--
+-- Name: warehouse_techsouporder; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE warehouse_techsouporder (
+    id integer NOT NULL,
+    techsoup_order_number character varying(20) NOT NULL,
+    order_date date NOT NULL,
+    five_day_sla date NOT NULL,
+    ten_day_sla date NOT NULL,
+    shipped_on date,
+    note text
+);
+
+
+ALTER TABLE public.warehouse_techsouporder OWNER TO icdb;
+
+--
+-- Name: warehouse_techsouporder_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE warehouse_techsouporder_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.warehouse_techsouporder_id_seq OWNER TO icdb;
+
+--
+-- Name: warehouse_techsouporder_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE warehouse_techsouporder_id_seq OWNED BY warehouse_techsouporder.id;
+
+
+--
+-- Name: warehouse_techsouporderedcomputers; Type: TABLE; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE TABLE warehouse_techsouporderedcomputers (
+    id integer NOT NULL,
+    techsoup_order_id integer NOT NULL,
+    quantity integer NOT NULL,
+    build_spec_id integer NOT NULL
+);
+
+
+ALTER TABLE public.warehouse_techsouporderedcomputers OWNER TO icdb;
+
+--
+-- Name: warehouse_techsouporderedcomputers_id_seq; Type: SEQUENCE; Schema: public; Owner: icdb
+--
+
+CREATE SEQUENCE warehouse_techsouporderedcomputers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.warehouse_techsouporderedcomputers_id_seq OWNER TO icdb;
+
+--
+-- Name: warehouse_techsouporderedcomputers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: icdb
+--
+
+ALTER SEQUENCE warehouse_techsouporderedcomputers_id_seq OWNED BY warehouse_techsouporderedcomputers.id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY accounts_userprofile ALTER COLUMN id SET DEFAULT nextval('accounts_userprofile_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY auth_group ALTER COLUMN id SET DEFAULT nextval('auth_group_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY auth_group_permissions ALTER COLUMN id SET DEFAULT nextval('auth_group_permissions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY auth_permission ALTER COLUMN id SET DEFAULT nextval('auth_permission_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY auth_user ALTER COLUMN id SET DEFAULT nextval('auth_user_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY auth_user_groups ALTER COLUMN id SET DEFAULT nextval('auth_user_groups_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY auth_user_user_permissions ALTER COLUMN id SET DEFAULT nextval('auth_user_user_permissions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY django_admin_log ALTER COLUMN id SET DEFAULT nextval('django_admin_log_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY django_content_type ALTER COLUMN id SET DEFAULT nextval('django_content_type_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY django_site ALTER COLUMN id SET DEFAULT nextval('django_site_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY donations_donation ALTER COLUMN id SET DEFAULT nextval('donations_donation_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY donations_donor ALTER COLUMN id SET DEFAULT nextval('donations_donor_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_audio_report ALTER COLUMN id SET DEFAULT nextval('inventory_audio_report_id_seq'::regclass);
+
+
+--
+-- Name: number; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_barcode ALTER COLUMN number SET DEFAULT nextval('inventory_barcode_number_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_battery_report ALTER COLUMN id SET DEFAULT nextval('inventory_battery_report_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_box ALTER COLUMN id SET DEFAULT nextval('inventory_box_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_computer ALTER COLUMN id SET DEFAULT nextval('inventory_computer_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_cpu_report ALTER COLUMN id SET DEFAULT nextval('inventory_cpu_report_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_hdd ALTER COLUMN id SET DEFAULT nextval('inventory_hdd_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_hdd_partition_report ALTER COLUMN id SET DEFAULT nextval('inventory_hdd_partition_report_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_hdd_report ALTER COLUMN id SET DEFAULT nextval('inventory_hdd_report_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_hdd_wipe_report ALTER COLUMN id SET DEFAULT nextval('inventory_hdd_wipe_report_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_inventory_report ALTER COLUMN id SET DEFAULT nextval('inventory_inventory_report_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_inventorylabel ALTER COLUMN id SET DEFAULT nextval('inventory_inventorylabel_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_inventorylabel_barcodes ALTER COLUMN id SET DEFAULT nextval('inventory_inventorylabel_barcodes_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_inventorylabel_item_types ALTER COLUMN id SET DEFAULT nextval('inventory_inventorylabel_item_types_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_item_type ALTER COLUMN id SET DEFAULT nextval('inventory_item_type_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_labelprinter ALTER COLUMN id SET DEFAULT nextval('inventory_labelprinter_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_mac ALTER COLUMN id SET DEFAULT nextval('inventory_mac_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_mac_hdd_report ALTER COLUMN id SET DEFAULT nextval('inventory_mac_hdd_report_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_mac_inventory_report ALTER COLUMN id SET DEFAULT nextval('inventory_mac_inventory_report_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_mac_optical_report ALTER COLUMN id SET DEFAULT nextval('inventory_mac_optical_report_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_monitor ALTER COLUMN id SET DEFAULT nextval('inventory_monitor_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_motherboard_report ALTER COLUMN id SET DEFAULT nextval('inventory_motherboard_report_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_opticaldrive_report ALTER COLUMN id SET DEFAULT nextval('inventory_opticaldrive_report_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_other ALTER COLUMN id SET DEFAULT nextval('inventory_other_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_pallet ALTER COLUMN id SET DEFAULT nextval('inventory_pallet_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_ram_report ALTER COLUMN id SET DEFAULT nextval('inventory_ram_report_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_supplycount ALTER COLUMN id SET DEFAULT nextval('inventory_supplycount_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_unprocessedrecycleditems ALTER COLUMN id SET DEFAULT nextval('inventory_unprocessedrecycleditems_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_video_report ALTER COLUMN id SET DEFAULT nextval('inventory_video_report_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY production_computerbuildspec ALTER COLUMN id SET DEFAULT nextval('production_computerbuildspec_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY production_computerdiscoveryrework ALTER COLUMN id SET DEFAULT nextval('production_computerdiscoveryrework_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY production_computerqcrework ALTER COLUMN id SET DEFAULT nextval('production_computerqcrework_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY production_computertouchpoint ALTER COLUMN id SET DEFAULT nextval('production_computertouchpoint_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY production_productiongoal ALTER COLUMN id SET DEFAULT nextval('production_productiongoal_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY retail_customer ALTER COLUMN id SET DEFAULT nextval('retail_customer_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY retail_customerdatadestructionrequest ALTER COLUMN id SET DEFAULT nextval('retail_customerdatadestructionrequest_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY south_migrationhistory ALTER COLUMN id SET DEFAULT nextval('south_migrationhistory_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY warehouse_customer ALTER COLUMN id SET DEFAULT nextval('warehouse_customer_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY warehouse_order ALTER COLUMN id SET DEFAULT nextval('warehouse_order_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY warehouse_orderedcomputers ALTER COLUMN id SET DEFAULT nextval('warehouse_orderedcomputers_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY warehouse_orderedmonitors ALTER COLUMN id SET DEFAULT nextval('warehouse_orderedmonitors_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY warehouse_orderedsupplies ALTER COLUMN id SET DEFAULT nextval('warehouse_orderedsupplies_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY warehouse_ordertarget ALTER COLUMN id SET DEFAULT nextval('warehouse_ordertarget_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY warehouse_shippingcontainer ALTER COLUMN id SET DEFAULT nextval('warehouse_shippingcontainer_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY warehouse_techsouporder ALTER COLUMN id SET DEFAULT nextval('warehouse_techsouporder_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY warehouse_techsouporderedcomputers ALTER COLUMN id SET DEFAULT nextval('warehouse_techsouporderedcomputers_id_seq'::regclass);
+
+
+--
+-- Name: accounts_userprofile_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY accounts_userprofile
+    ADD CONSTRAINT accounts_userprofile_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: accounts_userprofile_user_id_key; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY accounts_userprofile
+    ADD CONSTRAINT accounts_userprofile_user_id_key UNIQUE (user_id);
+
+
+--
+-- Name: auth_group_name_key; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group
+    ADD CONSTRAINT auth_group_name_key UNIQUE (name);
+
+
+--
+-- Name: auth_group_permissions_group_id_permission_id_key; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_permission_id_key UNIQUE (group_id, permission_id);
+
+
+--
+-- Name: auth_group_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group
+    ADD CONSTRAINT auth_group_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_permission_content_type_id_codename_key; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_codename_key UNIQUE (content_type_id, codename);
+
+
+--
+-- Name: auth_permission_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permission_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups_user_id_group_id_key; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_group_id_key UNIQUE (user_id, group_id);
+
+
+--
+-- Name: auth_user_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user
+    ADD CONSTRAINT auth_user_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions_user_id_permission_id_key; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_permission_id_key UNIQUE (user_id, permission_id);
+
+
+--
+-- Name: auth_user_username_key; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user
+    ADD CONSTRAINT auth_user_username_key UNIQUE (username);
+
+
+--
+-- Name: django_admin_log_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_log_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_content_type_app_label_model_key; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY django_content_type
+    ADD CONSTRAINT django_content_type_app_label_model_key UNIQUE (app_label, model);
+
+
+--
+-- Name: django_content_type_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY django_content_type
+    ADD CONSTRAINT django_content_type_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_session_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY django_session
+    ADD CONSTRAINT django_session_pkey PRIMARY KEY (session_key);
+
+
+--
+-- Name: django_site_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY django_site
+    ADD CONSTRAINT django_site_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: donations_donation_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY donations_donation
+    ADD CONSTRAINT donations_donation_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: donations_donor_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY donations_donor
+    ADD CONSTRAINT donations_donor_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_audio_report_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_audio_report
+    ADD CONSTRAINT inventory_audio_report_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_barcode_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_barcode
+    ADD CONSTRAINT inventory_barcode_pkey PRIMARY KEY (number);
+
+
+--
+-- Name: inventory_battery_report_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_battery_report
+    ADD CONSTRAINT inventory_battery_report_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_box_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_box
+    ADD CONSTRAINT inventory_box_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_computer_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_computer
+    ADD CONSTRAINT inventory_computer_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_cpu_report_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_cpu_report
+    ADD CONSTRAINT inventory_cpu_report_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_hdd_partition_report_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_hdd_partition_report
+    ADD CONSTRAINT inventory_hdd_partition_report_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_hdd_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_hdd
+    ADD CONSTRAINT inventory_hdd_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_hdd_report_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_hdd_report
+    ADD CONSTRAINT inventory_hdd_report_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_hdd_wipe_report_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_hdd_wipe_report
+    ADD CONSTRAINT inventory_hdd_wipe_report_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_inventory_report_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_inventory_report
+    ADD CONSTRAINT inventory_inventory_report_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_inventorylabel_barco_inventorylabel_id_barcode_id_key; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_inventorylabel_barcodes
+    ADD CONSTRAINT inventory_inventorylabel_barco_inventorylabel_id_barcode_id_key UNIQUE (inventorylabel_id, barcode_id);
+
+
+--
+-- Name: inventory_inventorylabel_barcodes_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_inventorylabel_barcodes
+    ADD CONSTRAINT inventory_inventorylabel_barcodes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_inventorylabel_item_inventorylabel_id_item_type_i_key; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_inventorylabel_item_types
+    ADD CONSTRAINT inventory_inventorylabel_item_inventorylabel_id_item_type_i_key UNIQUE (inventorylabel_id, item_type_id);
+
+
+--
+-- Name: inventory_inventorylabel_item_types_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_inventorylabel_item_types
+    ADD CONSTRAINT inventory_inventorylabel_item_types_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_inventorylabel_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_inventorylabel
+    ADD CONSTRAINT inventory_inventorylabel_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_item_type_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_item_type
+    ADD CONSTRAINT inventory_item_type_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_labelprinter_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_labelprinter
+    ADD CONSTRAINT inventory_labelprinter_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_mac_hdd_report_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_mac_hdd_report
+    ADD CONSTRAINT inventory_mac_hdd_report_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_mac_inventory_report_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_mac_inventory_report
+    ADD CONSTRAINT inventory_mac_inventory_report_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_mac_optical_report_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_mac_optical_report
+    ADD CONSTRAINT inventory_mac_optical_report_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_mac_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_mac
+    ADD CONSTRAINT inventory_mac_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_monitor_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_monitor
+    ADD CONSTRAINT inventory_monitor_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_motherboard_report_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_motherboard_report
+    ADD CONSTRAINT inventory_motherboard_report_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_opticaldrive_report_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_opticaldrive_report
+    ADD CONSTRAINT inventory_opticaldrive_report_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_other_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_other
+    ADD CONSTRAINT inventory_other_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_pallet_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_pallet
+    ADD CONSTRAINT inventory_pallet_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_ram_report_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_ram_report
+    ADD CONSTRAINT inventory_ram_report_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_supplycount_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_supplycount
+    ADD CONSTRAINT inventory_supplycount_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_unprocessedrecycleditems_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_unprocessedrecycleditems
+    ADD CONSTRAINT inventory_unprocessedrecycleditems_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_video_report_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_video_report
+    ADD CONSTRAINT inventory_video_report_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: production_computerbuildspec_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY production_computerbuildspec
+    ADD CONSTRAINT production_computerbuildspec_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: production_computerdiscoveryrework_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY production_computerdiscoveryrework
+    ADD CONSTRAINT production_computerdiscoveryrework_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: production_computerqcrework_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY production_computerqcrework
+    ADD CONSTRAINT production_computerqcrework_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: production_computertouchpoint_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY production_computertouchpoint
+    ADD CONSTRAINT production_computertouchpoint_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: production_productiongoal_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY production_productiongoal
+    ADD CONSTRAINT production_productiongoal_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: retail_customer_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY retail_customer
+    ADD CONSTRAINT retail_customer_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: retail_customerdatadestructionrequest_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY retail_customerdatadestructionrequest
+    ADD CONSTRAINT retail_customerdatadestructionrequest_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: south_migrationhistory_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY south_migrationhistory
+    ADD CONSTRAINT south_migrationhistory_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: warehouse_customer_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY warehouse_customer
+    ADD CONSTRAINT warehouse_customer_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: warehouse_order_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY warehouse_order
+    ADD CONSTRAINT warehouse_order_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: warehouse_order_tag_id_key; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY warehouse_order
+    ADD CONSTRAINT warehouse_order_tag_id_key UNIQUE (tag_id);
+
+
+--
+-- Name: warehouse_orderedcomputers_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY warehouse_orderedcomputers
+    ADD CONSTRAINT warehouse_orderedcomputers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: warehouse_orderedmonitors_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY warehouse_orderedmonitors
+    ADD CONSTRAINT warehouse_orderedmonitors_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: warehouse_orderedsupplies_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY warehouse_orderedsupplies
+    ADD CONSTRAINT warehouse_orderedsupplies_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: warehouse_ordertarget_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY warehouse_ordertarget
+    ADD CONSTRAINT warehouse_ordertarget_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: warehouse_shippingcontainer_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY warehouse_shippingcontainer
+    ADD CONSTRAINT warehouse_shippingcontainer_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: warehouse_techsouporder_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY warehouse_techsouporder
+    ADD CONSTRAINT warehouse_techsouporder_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: warehouse_techsouporderedcomputers_pkey; Type: CONSTRAINT; Schema: public; Owner: icdb; Tablespace: 
+--
+
+ALTER TABLE ONLY warehouse_techsouporderedcomputers
+    ADD CONSTRAINT warehouse_techsouporderedcomputers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group_permissions_group_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX auth_group_permissions_group_id ON auth_group_permissions USING btree (group_id);
+
+
+--
+-- Name: auth_group_permissions_permission_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX auth_group_permissions_permission_id ON auth_group_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_permission_content_type_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX auth_permission_content_type_id ON auth_permission USING btree (content_type_id);
+
+
+--
+-- Name: auth_user_groups_group_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX auth_user_groups_group_id ON auth_user_groups USING btree (group_id);
+
+
+--
+-- Name: auth_user_groups_user_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX auth_user_groups_user_id ON auth_user_groups USING btree (user_id);
+
+
+--
+-- Name: auth_user_user_permissions_permission_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX auth_user_user_permissions_permission_id ON auth_user_user_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_user_user_permissions_user_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX auth_user_user_permissions_user_id ON auth_user_user_permissions USING btree (user_id);
+
+
+--
+-- Name: django_admin_log_content_type_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX django_admin_log_content_type_id ON django_admin_log USING btree (content_type_id);
+
+
+--
+-- Name: django_admin_log_user_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX django_admin_log_user_id ON django_admin_log USING btree (user_id);
+
+
+--
+-- Name: django_session_expire_date; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX django_session_expire_date ON django_session USING btree (expire_date);
+
+
+--
+-- Name: donations_donation_donor_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX donations_donation_donor_id ON donations_donation USING btree (donor_id);
+
+
+--
+-- Name: donations_donation_retail_data_destruction_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX donations_donation_retail_data_destruction_id ON donations_donation USING btree (retail_data_destruction_id);
+
+
+--
+-- Name: donations_donor_account_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX donations_donor_account_id ON donations_donor USING btree (account_id);
+
+
+--
+-- Name: donations_donor_referral_partner_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX donations_donor_referral_partner_id ON donations_donor USING btree (referral_partner_id);
+
+
+--
+-- Name: inventory_audio_report_inventory_report_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_audio_report_inventory_report_id ON inventory_audio_report USING btree (inventory_report_id);
+
+
+--
+-- Name: inventory_barcode_box_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_barcode_box_id ON inventory_barcode USING btree (box_id);
+
+
+--
+-- Name: inventory_barcode_donation_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_barcode_donation_id ON inventory_barcode USING btree (donation_id);
+
+
+--
+-- Name: inventory_barcode_pallet_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_barcode_pallet_id ON inventory_barcode USING btree (pallet_id);
+
+
+--
+-- Name: inventory_box_barcode_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_box_barcode_id ON inventory_box USING btree (barcode_id);
+
+
+--
+-- Name: inventory_computer_barcode_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_computer_barcode_id ON inventory_computer USING btree (barcode_id);
+
+
+--
+-- Name: inventory_computer_build_spec_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_computer_build_spec_id ON inventory_computer USING btree (build_spec_id);
+
+
+--
+-- Name: inventory_computer_current_report_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_computer_current_report_id ON inventory_computer USING btree (current_report_id);
+
+
+--
+-- Name: inventory_computer_current_touchpoint_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_computer_current_touchpoint_id ON inventory_computer USING btree (current_touchpoint_id);
+
+
+--
+-- Name: inventory_computer_order_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_computer_order_id ON inventory_computer USING btree (order_id);
+
+
+--
+-- Name: inventory_computer_techsoup_order_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_computer_techsoup_order_id ON inventory_computer USING btree (techsoup_order_id);
+
+
+--
+-- Name: inventory_cpu_report_inventory_report_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_cpu_report_inventory_report_id ON inventory_cpu_report USING btree (inventory_report_id);
+
+
+--
+-- Name: inventory_hdd_barcode_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_hdd_barcode_id ON inventory_hdd USING btree (barcode_id);
+
+
+--
+-- Name: inventory_hdd_current_report_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_hdd_current_report_id ON inventory_hdd USING btree (current_report_id);
+
+
+--
+-- Name: inventory_hdd_origin_computer_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_hdd_origin_computer_id ON inventory_hdd USING btree (origin_computer_id);
+
+
+--
+-- Name: inventory_hdd_report_hdd_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_hdd_report_hdd_id ON inventory_hdd_report USING btree (hdd_id);
+
+
+--
+-- Name: inventory_hdd_report_inventory_report_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_hdd_report_inventory_report_id ON inventory_hdd_report USING btree (inventory_report_id);
+
+
+--
+-- Name: inventory_hdd_report_partition_report_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_hdd_report_partition_report_id ON inventory_hdd_report USING btree (partition_report_id);
+
+
+--
+-- Name: inventory_hdd_report_wipe_report_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_hdd_report_wipe_report_id ON inventory_hdd_report USING btree (wipe_report_id);
+
+
+--
+-- Name: inventory_inventory_report_barcode_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_inventory_report_barcode_id ON inventory_inventory_report USING btree (barcode_id);
+
+
+--
+-- Name: inventory_inventorylabel_barcodes_barcode_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_inventorylabel_barcodes_barcode_id ON inventory_inventorylabel_barcodes USING btree (barcode_id);
+
+
+--
+-- Name: inventory_inventorylabel_barcodes_inventorylabel_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_inventorylabel_barcodes_inventorylabel_id ON inventory_inventorylabel_barcodes USING btree (inventorylabel_id);
+
+
+--
+-- Name: inventory_inventorylabel_item_types_inventorylabel_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_inventorylabel_item_types_inventorylabel_id ON inventory_inventorylabel_item_types USING btree (inventorylabel_id);
+
+
+--
+-- Name: inventory_inventorylabel_item_types_item_type_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_inventorylabel_item_types_item_type_id ON inventory_inventorylabel_item_types USING btree (item_type_id);
+
+
+--
+-- Name: inventory_mac_barcode_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_mac_barcode_id ON inventory_mac USING btree (barcode_id);
+
+
+--
+-- Name: inventory_mac_current_report_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_mac_current_report_id ON inventory_mac USING btree (current_report_id);
+
+
+--
+-- Name: inventory_mac_discovery_report_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_mac_discovery_report_id ON inventory_mac USING btree (discovery_report_id);
+
+
+--
+-- Name: inventory_mac_hdd_report_mac_report_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_mac_hdd_report_mac_report_id ON inventory_mac_hdd_report USING btree (mac_report_id);
+
+
+--
+-- Name: inventory_mac_inventory_report_barcode_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_mac_inventory_report_barcode_id ON inventory_mac_inventory_report USING btree (barcode_id);
+
+
+--
+-- Name: inventory_mac_inventory_report_user_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_mac_inventory_report_user_id ON inventory_mac_inventory_report USING btree (user_id);
+
+
+--
+-- Name: inventory_mac_optical_report_mac_report_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_mac_optical_report_mac_report_id ON inventory_mac_optical_report USING btree (mac_report_id);
+
+
+--
+-- Name: inventory_monitor_barcode_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_monitor_barcode_id ON inventory_monitor USING btree (barcode_id);
+
+
+--
+-- Name: inventory_monitor_order_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_monitor_order_id ON inventory_monitor USING btree (order_id);
+
+
+--
+-- Name: inventory_monitor_processed_by_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_monitor_processed_by_id ON inventory_monitor USING btree (processed_by_id);
+
+
+--
+-- Name: inventory_motherboard_report_inventory_report_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_motherboard_report_inventory_report_id ON inventory_motherboard_report USING btree (inventory_report_id);
+
+
+--
+-- Name: inventory_opticaldrive_report_inventory_report_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_opticaldrive_report_inventory_report_id ON inventory_opticaldrive_report USING btree (inventory_report_id);
+
+
+--
+-- Name: inventory_other_barcode_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_other_barcode_id ON inventory_other USING btree (barcode_id);
+
+
+--
+-- Name: inventory_pallet_barcode_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_pallet_barcode_id ON inventory_pallet USING btree (barcode_id);
+
+
+--
+-- Name: inventory_pallet_shipping_container_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_pallet_shipping_container_id ON inventory_pallet USING btree (shipping_container_id);
+
+
+--
+-- Name: inventory_ram_report_inventory_report_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_ram_report_inventory_report_id ON inventory_ram_report USING btree (inventory_report_id);
+
+
+--
+-- Name: inventory_supplycount_box_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_supplycount_box_id ON inventory_supplycount USING btree (box_id);
+
+
+--
+-- Name: inventory_unprocessedrecycleditems_donation_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_unprocessedrecycleditems_donation_id ON inventory_unprocessedrecycleditems USING btree (donation_id);
+
+
+--
+-- Name: inventory_video_report_inventory_report_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX inventory_video_report_inventory_report_id ON inventory_video_report USING btree (inventory_report_id);
+
+
+--
+-- Name: production_computerdiscoveryrework_computer_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX production_computerdiscoveryrework_computer_id ON production_computerdiscoveryrework USING btree (computer_id);
+
+
+--
+-- Name: production_computerdiscoveryrework_rework_finished_by_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX production_computerdiscoveryrework_rework_finished_by_id ON production_computerdiscoveryrework USING btree (rework_finished_by_id);
+
+
+--
+-- Name: production_computerdiscoveryrework_rework_requested_by_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX production_computerdiscoveryrework_rework_requested_by_id ON production_computerdiscoveryrework USING btree (rework_requested_by_id);
+
+
+--
+-- Name: production_computerqcrework_computer_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX production_computerqcrework_computer_id ON production_computerqcrework USING btree (computer_id);
+
+
+--
+-- Name: production_computerqcrework_rework_finished_by_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX production_computerqcrework_rework_finished_by_id ON production_computerqcrework USING btree (rework_finished_by_id);
+
+
+--
+-- Name: production_computerqcrework_rework_requested_by_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX production_computerqcrework_rework_requested_by_id ON production_computerqcrework USING btree (rework_requested_by_id);
+
+
+--
+-- Name: production_computertouchpoint_computer_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX production_computertouchpoint_computer_id ON production_computertouchpoint USING btree (computer_id);
+
+
+--
+-- Name: production_computertouchpoint_snapshot_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX production_computertouchpoint_snapshot_id ON production_computertouchpoint USING btree (snapshot_id);
+
+
+--
+-- Name: production_computertouchpoint_user_in_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX production_computertouchpoint_user_in_id ON production_computertouchpoint USING btree (user_in_id);
+
+
+--
+-- Name: production_computertouchpoint_user_out_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX production_computertouchpoint_user_out_id ON production_computertouchpoint USING btree (user_out_id);
+
+
+--
+-- Name: warehouse_orderedcomputers_build_spec_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX warehouse_orderedcomputers_build_spec_id ON warehouse_orderedcomputers USING btree (build_spec_id);
+
+
+--
+-- Name: warehouse_orderedcomputers_order_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX warehouse_orderedcomputers_order_id ON warehouse_orderedcomputers USING btree (order_id);
+
+
+--
+-- Name: warehouse_orderedmonitors_order_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX warehouse_orderedmonitors_order_id ON warehouse_orderedmonitors USING btree (order_id);
+
+
+--
+-- Name: warehouse_orderedsupplies_order_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX warehouse_orderedsupplies_order_id ON warehouse_orderedsupplies USING btree (order_id);
+
+
+--
+-- Name: warehouse_ordertarget_build_spec_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX warehouse_ordertarget_build_spec_id ON warehouse_ordertarget USING btree (build_spec_id);
+
+
+--
+-- Name: warehouse_ordertarget_order_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX warehouse_ordertarget_order_id ON warehouse_ordertarget USING btree (order_id);
+
+
+--
+-- Name: warehouse_techsouporderedcomputers_build_spec_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX warehouse_techsouporderedcomputers_build_spec_id ON warehouse_techsouporderedcomputers USING btree (build_spec_id);
+
+
+--
+-- Name: warehouse_techsouporderedcomputers_techsoup_order_id; Type: INDEX; Schema: public; Owner: icdb; Tablespace: 
+--
+
+CREATE INDEX warehouse_techsouporderedcomputers_techsoup_order_id ON warehouse_techsouporderedcomputers USING btree (techsoup_order_id);
+
+
+--
+-- Name: account_id_refs_id_4656d99a505faa05; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY donations_donor
+    ADD CONSTRAINT account_id_refs_id_4656d99a505faa05 FOREIGN KEY (account_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: accounts_userprofile_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY accounts_userprofile
+    ADD CONSTRAINT accounts_userprofile_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_group_permissions_permission_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_permission_id_fkey FOREIGN KEY (permission_id) REFERENCES auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_groups_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_group_id_fkey FOREIGN KEY (group_id) REFERENCES auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_user_permissions_permission_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_permission_id_fkey FOREIGN KEY (permission_id) REFERENCES auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: box_id_refs_id_fb6d043e; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_barcode
+    ADD CONSTRAINT box_id_refs_id_fb6d043e FOREIGN KEY (box_id) REFERENCES inventory_box(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: build_spec_id_refs_id_6216a41d; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_computer
+    ADD CONSTRAINT build_spec_id_refs_id_6216a41d FOREIGN KEY (build_spec_id) REFERENCES production_computerbuildspec(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: content_type_id_refs_id_728de91f; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT content_type_id_refs_id_728de91f FOREIGN KEY (content_type_id) REFERENCES django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: current_report_id_refs_id_dc7550a; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_mac
+    ADD CONSTRAINT current_report_id_refs_id_dc7550a FOREIGN KEY (current_report_id) REFERENCES inventory_mac_inventory_report(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: current_touchpoint_id_refs_id_beb84074; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_computer
+    ADD CONSTRAINT current_touchpoint_id_refs_id_beb84074 FOREIGN KEY (current_touchpoint_id) REFERENCES production_computertouchpoint(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: discovery_report_id_refs_id_dc7550a; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_mac
+    ADD CONSTRAINT discovery_report_id_refs_id_dc7550a FOREIGN KEY (discovery_report_id) REFERENCES inventory_mac_inventory_report(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log_content_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_log_content_type_id_fkey FOREIGN KEY (content_type_id) REFERENCES django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_log_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: donations_donation_donor_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY donations_donation
+    ADD CONSTRAINT donations_donation_donor_id_fkey FOREIGN KEY (donor_id) REFERENCES donations_donor(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: group_id_refs_id_3cea63fe; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT group_id_refs_id_3cea63fe FOREIGN KEY (group_id) REFERENCES auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: hdd_id_refs_id_61410b79; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_hdd_report
+    ADD CONSTRAINT hdd_id_refs_id_61410b79 FOREIGN KEY (hdd_id) REFERENCES inventory_hdd(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_audio_report_inventory_report_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_audio_report
+    ADD CONSTRAINT inventory_audio_report_inventory_report_id_fkey FOREIGN KEY (inventory_report_id) REFERENCES inventory_inventory_report(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_barcode_donation_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_barcode
+    ADD CONSTRAINT inventory_barcode_donation_id_fkey FOREIGN KEY (donation_id) REFERENCES donations_donation(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_box_barcode_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_box
+    ADD CONSTRAINT inventory_box_barcode_id_fkey FOREIGN KEY (barcode_id) REFERENCES inventory_barcode(number) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_computer_barcode_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_computer
+    ADD CONSTRAINT inventory_computer_barcode_id_fkey FOREIGN KEY (barcode_id) REFERENCES inventory_barcode(number) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_computer_current_report_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_computer
+    ADD CONSTRAINT inventory_computer_current_report_id_fkey FOREIGN KEY (current_report_id) REFERENCES inventory_inventory_report(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_cpu_report_inventory_report_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_cpu_report
+    ADD CONSTRAINT inventory_cpu_report_inventory_report_id_fkey FOREIGN KEY (inventory_report_id) REFERENCES inventory_inventory_report(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_hdd_barcode_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_hdd
+    ADD CONSTRAINT inventory_hdd_barcode_id_fkey FOREIGN KEY (barcode_id) REFERENCES inventory_barcode(number) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_hdd_current_report_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_hdd
+    ADD CONSTRAINT inventory_hdd_current_report_id_fkey FOREIGN KEY (current_report_id) REFERENCES inventory_hdd_report(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_hdd_origin_computer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_hdd
+    ADD CONSTRAINT inventory_hdd_origin_computer_id_fkey FOREIGN KEY (origin_computer_id) REFERENCES inventory_computer(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_hdd_report_inventory_report_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_hdd_report
+    ADD CONSTRAINT inventory_hdd_report_inventory_report_id_fkey FOREIGN KEY (inventory_report_id) REFERENCES inventory_inventory_report(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_inventory_report_barcode_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_inventory_report
+    ADD CONSTRAINT inventory_inventory_report_barcode_id_fkey FOREIGN KEY (barcode_id) REFERENCES inventory_barcode(number) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_inventorylabel_barcodes_barcode_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_inventorylabel_barcodes
+    ADD CONSTRAINT inventory_inventorylabel_barcodes_barcode_id_fkey FOREIGN KEY (barcode_id) REFERENCES inventory_barcode(number) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_inventorylabel_item_types_item_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_inventorylabel_item_types
+    ADD CONSTRAINT inventory_inventorylabel_item_types_item_type_id_fkey FOREIGN KEY (item_type_id) REFERENCES inventory_item_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_mac_barcode_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_mac
+    ADD CONSTRAINT inventory_mac_barcode_id_fkey FOREIGN KEY (barcode_id) REFERENCES inventory_barcode(number) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_mac_hdd_report_mac_report_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_mac_hdd_report
+    ADD CONSTRAINT inventory_mac_hdd_report_mac_report_id_fkey FOREIGN KEY (mac_report_id) REFERENCES inventory_mac_inventory_report(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_mac_inventory_report_barcode_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_mac_inventory_report
+    ADD CONSTRAINT inventory_mac_inventory_report_barcode_id_fkey FOREIGN KEY (barcode_id) REFERENCES inventory_barcode(number) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_mac_inventory_report_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_mac_inventory_report
+    ADD CONSTRAINT inventory_mac_inventory_report_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_mac_optical_report_mac_report_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_mac_optical_report
+    ADD CONSTRAINT inventory_mac_optical_report_mac_report_id_fkey FOREIGN KEY (mac_report_id) REFERENCES inventory_mac_inventory_report(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_monitor_barcode_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_monitor
+    ADD CONSTRAINT inventory_monitor_barcode_id_fkey FOREIGN KEY (barcode_id) REFERENCES inventory_barcode(number) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_monitor_processed_by_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_monitor
+    ADD CONSTRAINT inventory_monitor_processed_by_id_fkey FOREIGN KEY (processed_by_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_motherboard_report_inventory_report_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_motherboard_report
+    ADD CONSTRAINT inventory_motherboard_report_inventory_report_id_fkey FOREIGN KEY (inventory_report_id) REFERENCES inventory_inventory_report(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_opticaldrive_report_inventory_report_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_opticaldrive_report
+    ADD CONSTRAINT inventory_opticaldrive_report_inventory_report_id_fkey FOREIGN KEY (inventory_report_id) REFERENCES inventory_inventory_report(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_other_barcode_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_other
+    ADD CONSTRAINT inventory_other_barcode_id_fkey FOREIGN KEY (barcode_id) REFERENCES inventory_barcode(number) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_pallet_barcode_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_pallet
+    ADD CONSTRAINT inventory_pallet_barcode_id_fkey FOREIGN KEY (barcode_id) REFERENCES inventory_barcode(number) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_ram_report_inventory_report_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_ram_report
+    ADD CONSTRAINT inventory_ram_report_inventory_report_id_fkey FOREIGN KEY (inventory_report_id) REFERENCES inventory_inventory_report(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_supplycount_box_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_supplycount
+    ADD CONSTRAINT inventory_supplycount_box_id_fkey FOREIGN KEY (box_id) REFERENCES inventory_box(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_unprocessedrecycleditems_donation_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_unprocessedrecycleditems
+    ADD CONSTRAINT inventory_unprocessedrecycleditems_donation_id_fkey FOREIGN KEY (donation_id) REFERENCES donations_donation(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_video_report_inventory_report_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_video_report
+    ADD CONSTRAINT inventory_video_report_inventory_report_id_fkey FOREIGN KEY (inventory_report_id) REFERENCES inventory_inventory_report(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventorylabel_id_refs_id_2ffe7be; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_inventorylabel_barcodes
+    ADD CONSTRAINT inventorylabel_id_refs_id_2ffe7be FOREIGN KEY (inventorylabel_id) REFERENCES inventory_inventorylabel(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventorylabel_id_refs_id_b705bc3c; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_inventorylabel_item_types
+    ADD CONSTRAINT inventorylabel_id_refs_id_b705bc3c FOREIGN KEY (inventorylabel_id) REFERENCES inventory_inventorylabel(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: order_id_refs_id_3785d212; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_computer
+    ADD CONSTRAINT order_id_refs_id_3785d212 FOREIGN KEY (order_id) REFERENCES warehouse_orderedcomputers(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: order_id_refs_id_5c4edd68; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_monitor
+    ADD CONSTRAINT order_id_refs_id_5c4edd68 FOREIGN KEY (order_id) REFERENCES warehouse_orderedmonitors(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: pallet_id_refs_id_57298cbc; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_barcode
+    ADD CONSTRAINT pallet_id_refs_id_57298cbc FOREIGN KEY (pallet_id) REFERENCES inventory_pallet(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: partition_report_id_refs_id_facf961a; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_hdd_report
+    ADD CONSTRAINT partition_report_id_refs_id_facf961a FOREIGN KEY (partition_report_id) REFERENCES inventory_hdd_partition_report(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: production_computerdiscoveryrework_computer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY production_computerdiscoveryrework
+    ADD CONSTRAINT production_computerdiscoveryrework_computer_id_fkey FOREIGN KEY (computer_id) REFERENCES inventory_computer(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: production_computerdiscoveryrework_rework_finished_by_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY production_computerdiscoveryrework
+    ADD CONSTRAINT production_computerdiscoveryrework_rework_finished_by_id_fkey FOREIGN KEY (rework_finished_by_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: production_computerdiscoveryrework_rework_requested_by_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY production_computerdiscoveryrework
+    ADD CONSTRAINT production_computerdiscoveryrework_rework_requested_by_id_fkey FOREIGN KEY (rework_requested_by_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: production_computerqcrework_computer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY production_computerqcrework
+    ADD CONSTRAINT production_computerqcrework_computer_id_fkey FOREIGN KEY (computer_id) REFERENCES inventory_computer(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: production_computerqcrework_rework_finished_by_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY production_computerqcrework
+    ADD CONSTRAINT production_computerqcrework_rework_finished_by_id_fkey FOREIGN KEY (rework_finished_by_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: production_computerqcrework_rework_requested_by_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY production_computerqcrework
+    ADD CONSTRAINT production_computerqcrework_rework_requested_by_id_fkey FOREIGN KEY (rework_requested_by_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: production_computertouchpoint_computer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY production_computertouchpoint
+    ADD CONSTRAINT production_computertouchpoint_computer_id_fkey FOREIGN KEY (computer_id) REFERENCES inventory_computer(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: production_computertouchpoint_snapshot_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY production_computertouchpoint
+    ADD CONSTRAINT production_computertouchpoint_snapshot_id_fkey FOREIGN KEY (snapshot_id) REFERENCES inventory_inventory_report(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: production_computertouchpoint_user_in_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY production_computertouchpoint
+    ADD CONSTRAINT production_computertouchpoint_user_in_id_fkey FOREIGN KEY (user_in_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: production_computertouchpoint_user_out_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY production_computertouchpoint
+    ADD CONSTRAINT production_computertouchpoint_user_out_id_fkey FOREIGN KEY (user_out_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: referral_partner_id_refs_id_4adc62e38d4b3f7b; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY donations_donor
+    ADD CONSTRAINT referral_partner_id_refs_id_4adc62e38d4b3f7b FOREIGN KEY (referral_partner_id) REFERENCES donations_donor(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: retail_data_destruction_id_refs_id_31365275; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY donations_donation
+    ADD CONSTRAINT retail_data_destruction_id_refs_id_31365275 FOREIGN KEY (retail_data_destruction_id) REFERENCES retail_customerdatadestructionrequest(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: shipping_container_id_refs_id_60e72e9e; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_pallet
+    ADD CONSTRAINT shipping_container_id_refs_id_60e72e9e FOREIGN KEY (shipping_container_id) REFERENCES warehouse_shippingcontainer(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: techsoup_order_id_refs_id_98b6095f; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_computer
+    ADD CONSTRAINT techsoup_order_id_refs_id_98b6095f FOREIGN KEY (techsoup_order_id) REFERENCES warehouse_techsouporderedcomputers(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: user_id_refs_id_831107f1; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT user_id_refs_id_831107f1 FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: user_id_refs_id_f2045483; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT user_id_refs_id_f2045483 FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: warehouse_order_tag_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY warehouse_order
+    ADD CONSTRAINT warehouse_order_tag_id_fkey FOREIGN KEY (tag_id) REFERENCES inventory_inventorylabel(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: warehouse_orderedcomputers_build_spec_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY warehouse_orderedcomputers
+    ADD CONSTRAINT warehouse_orderedcomputers_build_spec_id_fkey FOREIGN KEY (build_spec_id) REFERENCES production_computerbuildspec(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: warehouse_orderedcomputers_order_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY warehouse_orderedcomputers
+    ADD CONSTRAINT warehouse_orderedcomputers_order_id_fkey FOREIGN KEY (order_id) REFERENCES warehouse_order(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: warehouse_orderedmonitors_order_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY warehouse_orderedmonitors
+    ADD CONSTRAINT warehouse_orderedmonitors_order_id_fkey FOREIGN KEY (order_id) REFERENCES warehouse_order(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: warehouse_orderedsupplies_order_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY warehouse_orderedsupplies
+    ADD CONSTRAINT warehouse_orderedsupplies_order_id_fkey FOREIGN KEY (order_id) REFERENCES warehouse_order(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: warehouse_ordertarget_build_spec_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY warehouse_ordertarget
+    ADD CONSTRAINT warehouse_ordertarget_build_spec_id_fkey FOREIGN KEY (build_spec_id) REFERENCES inventory_inventorylabel(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: warehouse_ordertarget_order_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY warehouse_ordertarget
+    ADD CONSTRAINT warehouse_ordertarget_order_id_fkey FOREIGN KEY (order_id) REFERENCES warehouse_order(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: warehouse_techsouporderedcomputers_build_spec_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY warehouse_techsouporderedcomputers
+    ADD CONSTRAINT warehouse_techsouporderedcomputers_build_spec_id_fkey FOREIGN KEY (build_spec_id) REFERENCES production_computerbuildspec(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: warehouse_techsouporderedcomputers_techsoup_order_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY warehouse_techsouporderedcomputers
+    ADD CONSTRAINT warehouse_techsouporderedcomputers_techsoup_order_id_fkey FOREIGN KEY (techsoup_order_id) REFERENCES warehouse_techsouporder(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: wipe_report_id_refs_id_44c292c; Type: FK CONSTRAINT; Schema: public; Owner: icdb
+--
+
+ALTER TABLE ONLY inventory_hdd_report
+    ADD CONSTRAINT wipe_report_id_refs_id_44c292c FOREIGN KEY (wipe_report_id) REFERENCES inventory_hdd_wipe_report(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
+\connect postgres
+
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: postgres; Type: COMMENT; Schema: -; Owner: postgres
+--
+
+COMMENT ON DATABASE postgres IS 'default administrative connection database';
+
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
+\connect template1
+
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: template1; Type: COMMENT; Schema: -; Owner: postgres
+--
+
+COMMENT ON DATABASE template1 IS 'default template for new databases';
+
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
+--
+-- PostgreSQL database cluster dump complete
+--
+
