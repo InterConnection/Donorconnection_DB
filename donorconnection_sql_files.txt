@@ -1,0 +1,6 @@
+/usr/share/postgresql/9.1/snowball_create.sql
+/usr/share/postgresql/9.1/system_views.sql
+/usr/share/postgresql/9.1/extension/plpgsql--1.0.sql
+/usr/share/postgresql/9.1/extension/plpgsql--unpackaged--1.0.sql
+/usr/share/postgresql/9.1/information_schema.sql
+/usr/share/postgresql/9.1/conversion_create.sql
